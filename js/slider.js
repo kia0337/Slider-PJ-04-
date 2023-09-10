@@ -55,14 +55,15 @@ const slidesToRender = slides.map(({city,area,time})=>makeSlide(city,area,time))
 const container = document.getElementById("slides-container");
 if (container != null){
     // container.append(...slidesToRender)
-    for (let i = 0; i <= slidesToRender.length; i++){
+    for (let i = 0; i < slidesToRender.length; i++){
     container.appendChild(slidesToRender[i])
     }
 }
 };
 renderSlides();
 
-const slider = document.querySelector('.slider');
+const slider = document.querySelector('#slider');
+
 
 // меняем индекс
 let active = 0;
@@ -75,52 +76,84 @@ function decrement (slides) {
     }
 };
 function incremet (slides) {
-    if (active = slides.length-1){
+    if (active = slides.length + 1){
         active = 0;
     } else {
         active += 1;
     }
 };
 
+let makeInactive = (function (){ 
+    let el = document.querySelector('.descripton-hidden');
+    for( let i = 0; i < slides.length; i++){
+    el.classList.remove("descripton-hidden")
+    };
+}) 
+makeInactive();
+
+
+
 //меняем бэк
-const setBack = (index) => {
-    slider.style.backgroundImage = `url(${slides[index].img})`;
+const setBack = (i) => {
+    slider.style.backgroundImage = `url(${slides[i].img})`;
 };
 
 // меняем контэнт
-const changeContent = (index) => {
-    document.querySelector('.city').textContent = slides[index].city;
-    document.querySelector('.area').textContent = slides[index].area;
-    document.querySelector('.time').textContent = slides[index].time;
+const changeContent = (i) => {
+    document.querySelector('city').textContent = slides[i].city;
+    document.querySelector('.area').textContent = slides[i].area;
+    document.querySelector('.time').textContent = slides[i].time;
 };
 
 // отображение точек
 const activeDot = (index) => {
-    slides[index].dot.style.opacity = 1;
-    slides[index].line.classList.add('brown-hypertext');
+    slides[i].dot.style.opacity = 1;
+    slides[i].line.classList.add('brown-hypertext');
 }
 const notActiveDot = (index) => {
-    slides[index].dot.style.opacity = 0.1;
-    slides[index].line.classList.remove('brown-hypertext');
+    slides[i].dot.style.opacity = 0.5;
+    slides[i].line.classList.remove('brown-hypertext');
 };
 
 const arrowLeft = document.querySelector('.slider-arrow-left');
 const arrowRight = document.querySelector('.slider-arrow-right');
 
+arrowRight.addEventListener('click', () => {
+    makeInactive ();
+    setBack();
+    notActiveDot();
+    incremet();
+    changeContent();
+    activeDot();
+});
+
 
 arrowLeft.addEventListener('click', () => {
-    makeInactive(active);
-    decrement(active);
-    changeContent(active);
-    setBack(active);
-    activeDot(active);
+    makeInactive ();
+    notActiveDot();
+    decrement();
+    changeContent();
+    setBack();
+    activeDot();
 });
 
-arrowRight.addEventListener('click', () => {
-    makeInactive(active);
-    incremet(active);
-    changeContent(active);
+const pressDot = (i) => {
+    notActiveDot(active);
+    changeContent(i);
+    active = i;
     setBack(active);
     activeDot(active);
-});
+};
+
+// function pressOnDot (){
+// for (let i = 0; i < slides.length; i++) {
+//     slides[i].dot.addEventListener('click', () => {
+//         press(i);
+//     });
+//     slides[i].line.addEventListener('click', () => {
+//         press(i);
+//     });
+// };
+// };
+// pressOnDot ();
 

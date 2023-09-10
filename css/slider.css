@@ -123,10 +123,12 @@ body * {
 
 .description {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
 }
-.descripton-hidden{
-display: hidden;
+
+.descripton-hidden {
+    display: none;
 }
 
 
@@ -238,9 +240,11 @@ display: hidden;
 }
 
 #slider {
+    height: 482px;
     width: 600px;
     background: url(../img/rostov.png );
 }
+
 
 .slider-arrow-left,
 .slider-arrow-right {
