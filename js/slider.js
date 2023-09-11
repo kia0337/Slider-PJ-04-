@@ -1,36 +1,39 @@
 const slides = [
-    {
-    img: '../img/rostov.png',
-    city: 'Rostov-on-Don LCD admiral',
-    area: '81 m2',
-    time: '3.5 months',
-    dot: document.querySelector('.dot-1'),
-    line: document.querySelector('.line-decorate-1'),
-    },
+  {
+    img: "../img/rostov.png",
+    city: "Rostov-on-Don LCD admiral",
+    area: "81 m2",
+    time: "3.5 months",
+    dot: document.querySelector(".dot-0"),
+    line: document.querySelector(".line-decorate-0"),
+  },
 
-    {
-    img: '../img/sochi.png',
-    city: 'Sochi Thieves',
-    area: '105 m2',
-    time: '4 months',
-    dot: document.querySelector('.dot-2'),
-    line: document.querySelector('.line-decorate-2'),
-    },
+  {
+    img: "../img/sochi.png",
+    city: "Sochi Thieves",
+    area: "105 m2",
+    time: "4 months",
+    dot: document.querySelector(".dot-1"),
+    line: document.querySelector(".line-decorate-1"),
+  },
 
-    {
-    img: '../img/patronic.png',
-    city:  'Rostov-on-Don LCD Patronic',
-    area: '93 m2',
-    time: '3 months',
-    dot: document.querySelector('.dot-3'),
-    line: document.querySelector('.line-decorate-3'),
-    }
+  {
+    img: "../img/patronic.png",
+    city: "Rostov-on-Don LCD Patronic",
+    area: "93 m2",
+    time: "3 months",
+    dot: document.querySelector(".dot-2"),
+    line: document.querySelector(".line-decorate-2"),
+  },
 ];
+const slider = document.querySelector("#slider");
+// меняем индекс
+let active = 0;
 
-function renderSlides(){
-const makeSlide =(city,area,time)=> {
+function renderSlides() {
+  const makeSlide = (city, area, time) => {
     const slide = document.createElement("div");
-    slide.className = "descripton-hidden";
+    slide.className = "slide descripton-hidden";
     slide.innerHTML = `
                         <div class="description-item">
                             <h3 class="title brown-text description-item-title">City:</h3>
@@ -48,101 +51,104 @@ const makeSlide =(city,area,time)=> {
                             <h3 class="title brown-text description-item-title">Repair Cost:</h3>
                             <span>Upon request</span>
                         </div>
-                    `
-    return slide
-            };
-const slidesToRender = slides.map(({city,area,time})=>makeSlide(city,area,time));
-const container = document.getElementById("slides-container");
-if (container != null){
+                    `;
+    return slide;
+  };
+  const slidesToRender = slides.map(({ city, area, time }) =>
+    makeSlide(city, area, time)
+  );
+  const container = document.getElementById("slides-container");
+  if (container != null) {
     // container.append(...slidesToRender)
-    for (let i = 0; i < slidesToRender.length; i++){
-    container.appendChild(slidesToRender[i])
+    for (let i = 0; i < slidesToRender.length; i++) {
+      container.appendChild(slidesToRender[i]);
     }
+  }
 }
-};
 renderSlides();
 
-const slider = document.querySelector('#slider');
+function decrement() {
+  if (slides == 0) {
+    active = slides.lenght - 1;
+  } else {
+    active -= 1;
+  }
+}
+function incremet() {
+  const newActive = active + 1;
+  if (newActive == slides.length) {
+    active = 0;
+  } else {
+    active = newActive;
+  }
+}
 
-
-// меняем индекс
-let active = 0;
-
-function decrement (slides) {
-    if(slides == 0){
-        active = slides.lenght - 1;
-    } else {
-        active -= 1;
-    }
+let makeInactive = function (indexToHide) {
+  let slidesContainer = document.getElementById("slides-container");
+  slidesContainer.children[indexToHide].classList.add("descripton-hidden");
 };
-function incremet (slides) {
-    if (active = slides.length + 1){
-        active = 0;
-    } else {
-        active += 1;
-    }
+// makeInactive();
+
+const makeActive = (indexToShow) => {
+  let slidesContainer = document.getElementById("slides-container");
+  slidesContainer.children[indexToShow].classList.remove("descripton-hidden");
 };
-
-let makeInactive = (function (){ 
-    let el = document.querySelector('.descripton-hidden');
-    for( let i = 0; i < slides.length; i++){
-    el.classList.remove("descripton-hidden")
-    };
-}) 
-makeInactive();
-
-
 
 //меняем бэк
 const setBack = (i) => {
-    slider.style.backgroundImage = `url(${slides[i].img})`;
+  slider.style.background = `url(${slides[i].img})`;
 };
 
 // меняем контэнт
 const changeContent = (i) => {
-    document.querySelector('city').textContent = slides[i].city;
-    document.querySelector('.area').textContent = slides[i].area;
-    document.querySelector('.time').textContent = slides[i].time;
+  document.querySelector(".city-text").textContent = slides[i].city;
+  document.querySelector(".area").textContent = slides[i].area;
+  document.querySelector(".time").textContent = slides[i].time;
 };
 
 // отображение точек
 const activeDot = (index) => {
-    slides[i].dot.style.opacity = 1;
-    slides[i].line.classList.add('brown-hypertext');
-}
+  slides[index].dot.style.opacity = 1;
+  slides[index].line.classList.add("brown-hypertext");
+};
 const notActiveDot = (index) => {
-    slides[i].dot.style.opacity = 0.5;
-    slides[i].line.classList.remove('brown-hypertext');
+  slides[index].dot.style.opacity = 0.5;
+  slides[index].line.classList.remove("brown-hypertext");
 };
 
-const arrowLeft = document.querySelector('.slider-arrow-left');
-const arrowRight = document.querySelector('.slider-arrow-right');
+const arrowLeft = document.querySelector(".slider-arrow-left");
+const arrowRight = document.querySelector(".slider-arrow-right");
 
-arrowRight.addEventListener('click', () => {
-    makeInactive ();
-    setBack();
-    notActiveDot();
-    incremet();
-    changeContent();
-    activeDot();
+arrowRight.addEventListener("click", () => {
+  // скрываем предыдущий
+  makeInactive(active);
+  // выставляем новый бэкграунд
+  setBack(active);
+  // убираем активность точки
+  notActiveDot(active);
+  // меняем активный элемент, то есть  active + 1
+  incremet();
+  // показываем контент
+  makeActive(active);
+  // добавляем активность точки
+  activeDot(active);
 });
 
-
-arrowLeft.addEventListener('click', () => {
-    makeInactive ();
-    notActiveDot();
-    decrement();
-    changeContent();
-    setBack();
-    activeDot();
+arrowLeft.addEventListener("click", () => {
+  makeInactive(active);
+  notActiveDot(active);
+  decrement();
+  changeContent(active);
+  setBack(active);
+  activeDot(active);
 });
 
 const pressDot = (i) => {
-    notActiveDot(active);
-    changeContent(i);
-    active = i;
-    setBack(active);
-    activeDot(active);
+  notActiveDot(active);
+  changeContent(i);
+  active = i;
+  setBack(active);
+  activeDot(active);
 };
 
 // function pressOnDot (){
@@ -157,3 +163,8 @@ const pressDot = (i) => {
 // };
 // pressOnDot ();
 
+(function displayFirstSlide() {
+  let el = document.getElementsByClassName("descripton-hidden");
+  el[0].classList.remove("descripton-hidden");
+  slides[0].dot.style.opacity = 1;
+})();
