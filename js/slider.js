@@ -114,12 +114,12 @@ const arrowRight = document.querySelector('.slider-arrow-right');
 arrowRight.addEventListener("click", () => {
     // скрываем предыдущий
     makeInactive(active);
-    // выставляем новый бэкграунд
-    setBack(active);
     // убираем активность точки
     notActiveDot(active);
     // меняем активный элемент, то есть  active + 1
     incremet();
+    // выставляем новый бэкграунд
+    setBack(active);
     // показываем контент
     makeActive(active);
     // добавляем активность точки
@@ -130,37 +130,26 @@ arrowRight.addEventListener("click", () => {
 arrowLeft.addEventListener('click', () => {
     // скрываем предыдущий
     makeInactive (active);
-    // новый бэк
-    setBack(active);
     // убираем активность точки
     notActiveDot(active);
     // меняем активный эл. active -1
     decrement();
+    // новый бэк
+    setBack(active);
      // показываем контент
     makeActive(active);
-      // добавляем активность точки
+    // добавляем активность точки
     activeDot(active);
 });
 
 const press = (i) => {
-    active = i;
+    makeInactive (active);
     notActiveDot(active);
-    makeActive(active);
+    active = i;
     setBack(active);
+    makeActive(active);
     activeDot(active);
 };
-
-
-
-function pressOn (){
-    let event = document.getElementsByClassName('line-decorate');
-    let eventTwo = decrement.getElementsByClassName('dot')
-    event[i].addEventListener('click',() => {
-        press(i)});
-    eventTwo[i].addEventListener('click',() => {
-        press(i)});
-};
-// pressOn();
 
 
 // IIFE
@@ -169,3 +158,12 @@ function pressOn (){
     el[0].classList.remove("descripton-hidden");
     slides[0].dot.style.opacity = 1;
 })();
+
+for ( let i = 0; i < slides.length; i++){
+    let event = document.getElementsByClassName('line-decorate');
+    let eventTwo = document.getElementsByClassName('dot')
+    event[i].addEventListener('click',() => {
+        press(i)});
+    eventTwo[i].addEventListener('click',() => {
+        press(i)});
+    };
